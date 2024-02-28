@@ -34,12 +34,13 @@ Basic security tests are also included (XSS, anti-bot).
 
 ### To be implemented:
 1. More efficient function design, such as separate functions for Selenium actions and their wait times (or other conditions).  
-2. Once site functionality is fixed, include omitted tests, such as checkout, or user-profile page navigation.  
-3. Multi-column dropdown handling.  
-4. Testing for navigation using the side-menu in the store's item browser was skipped due to time constraint (would have worked similarly to testing the store navigation from the header drodpowns - counter how many are present, go through each and make sure they lead to the correct page, and make sure the displayed numbers of items match).   
-5. Implementation for the Allure test result visualizer (again, due to needing a day or two that was not available).  
-6. Refined test parameters and reporting, depending on requirements and what faults are found (currently, the tests can only "fail" in general, without specifying causes).  
-7. Automated updating of browser drivers, per installed browser version. This would eliminate the need for manual updates.  
+2. Tests for store item reviews.  
+3. Once site functionality is fixed, include omitted tests, such as checkout, or user-profile page navigation.  
+4. Multi-column dropdown handling.  
+5. Testing for navigation using the side-menu in the store's item browser was skipped due to time constraint (would have worked similarly to testing the store navigation from the header drodpowns - counter how many are present, go through each and make sure they lead to the correct page, and make sure the displayed numbers of items match).   
+6. Implementation for the Allure test result visualizer (again, due to needing a day or two that was not available).  
+7. Refined test parameters and reporting, depending on requirements and what faults are found (currently, the tests can only "fail" in general, without specifying causes).  
+8. Automated updating of browser drivers, per installed browser version. This would eliminate the need for manual updates.  
 
 ### Known issues with the site itself:
 1. Using the "Search" function while the Search field isn't empty will lead to an "Internal error" page.  
@@ -54,3 +55,7 @@ Basic security tests are also included (XSS, anti-bot).
 1. As no design document is provided, test criteria is more generalized, since page requirements aren't known.  
 2. CloudFlare, an anti-bot protection system, cannot currently be bypassed - an "iframe" component is used, which Selenium has a hard time dealing with. Other methods, such as flag-switching or cookie-spoofing have also failed. This thus requires avoiding the protection, instead of challenging it, which means longer wait times between actions.  
 3. Firefox driver configuration was a hassle, but it works.  
+
+
+
+P.S. - after a very busy week in the army, about a year of not actively using Python, and almost half a year of not working full-stop, you are witnessing a minor miracle / cheap party trick in motion.  
