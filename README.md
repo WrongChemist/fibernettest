@@ -22,10 +22,10 @@ Alternatively, open the cmd window to the project folder, and enter "python main
 
 ### Configuration file:
 A configuration file is included - fbrntConfig.ini  
-Driver and exe paths should be changed if the project folder is moved from C:\tmp, or if the user's Firefox installation isn't at the default location.  
-Browsers can be set to "chrome" or "firefox"  
-The names, email, and password of the new user can be changed in the "User" section.  
-Version, OS, and OS_Version are currently unused.  
+- Driver and exe paths should be changed if the project folder is moved from C:\tmp, or if the user's Firefox installation isn't at the default location.  
+- Browsers can be set to "chrome" or "firefox"  
+- The names, email, and password of the new user can be changed in the "User" section.  
+- Version, OS, and OS_Version are currently unused.  
 All other parameters are unused, or should remain unchanged (such as the test site address).  
 
 ### What is included:
@@ -49,5 +49,6 @@ Basic security tests are also included (XSS, anti-bot).
 7. Individual item pages show inconsistent information, tabs, and fields.  
 
 ### Challenges and limitations:
-1. CloudFlare, an anti-bot protection system, cannot currently be bypassed - an "iframe" component is used, which Selenium has a hard time dealing with. Other methods, such as flag-switching or cookie-spoofing have also failed. This thus requires avoiding the protection, instead of challenging it, which means longer wait times between actions.  
-2. Firefox driver configuration was a hassle, but it works.  
+1. As no design document is provided, test criteria is more generalized, since page requirements aren't known.  
+2. CloudFlare, an anti-bot protection system, cannot currently be bypassed - an "iframe" component is used, which Selenium has a hard time dealing with. Other methods, such as flag-switching or cookie-spoofing have also failed. This thus requires avoiding the protection, instead of challenging it, which means longer wait times between actions.  
+3. Firefox driver configuration was a hassle, but it works.  
