@@ -2,7 +2,7 @@
 Below are all the instructions, explanations, details, and caveats for the automated test demonstration.  
 
 ## WARNING
-Due to time constraints, a slow work terminal, and CloudFlare present on the test website, running the script may produce HIGHLY INCONSISTENT results, such as slowdoown or lockouts.  
+Due to time constraints, a slow work terminal (especially during memory operations, such as counting), and CloudFlare present on the test website, running the script may produce HIGHLY INCONSISTENT results, such as slowdoown or lockouts.  
 Using a protection system on a public-facing website is non-negotiable, but bypassing it consistently would take time that isn't available.  
 Reference videos are included, demonstrating the functionality on my native machine, one for each browser.  
 
@@ -40,7 +40,7 @@ For details of each specific test, see comments above each function in main.py f
 4. Once site functionality is fixed, include omitted tests, such as checkout, or user-profile page navigation.  
 5. Multi-column dropdown handling.  
 6. Testing for navigation using the side-menu in the store's item browser was skipped due to time constraint (would have worked similarly to testing the store navigation from the header drodpowns - counter how many are present, go through each and make sure they lead to the correct page, and make sure the displayed numbers of items match).  
-7. Permanenet solution for the CloudFlare system, which currently forces massive wait times to avoid locking out the test bot.  
+7. Permanent solution for the CloudFlare system, which currently forces massive wait times to avoid locking out the test bot, perhaps using ActionChains, extra "filler" activity, or other.  
 8. Implementation for the Allure test result visualizer (again, due to needing a day or two that was not available).  
 9. Refined test parameters and reporting, depending on requirements and what faults are found (currently, the tests can only "fail" in general, without specifying causes).  
 10. Automated updating of browser drivers, per installed browser version. This would eliminate the need for manual updates.  
