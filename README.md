@@ -31,16 +31,19 @@ All other parameters are unused, or should remain unchanged (such as the test si
 ### What is included:
 A set of basic tests, using the pytest framework, testing basic site functionality (buttons, links, menus) and appearance (text, images).  
 Basic security tests are also included (XSS, anti-bot).   
+For details of each specific test, see comments above each function in main.py file.  
 
 ### To be implemented:
 1. More efficient function design, such as separate functions for Selenium actions and their wait times (or other conditions).  
-2. Tests for store item reviews.  
-3. Once site functionality is fixed, include omitted tests, such as checkout, or user-profile page navigation.  
-4. Multi-column dropdown handling.  
-5. Testing for navigation using the side-menu in the store's item browser was skipped due to time constraint (would have worked similarly to testing the store navigation from the header drodpowns - counter how many are present, go through each and make sure they lead to the correct page, and make sure the displayed numbers of items match).   
-6. Implementation for the Allure test result visualizer (again, due to needing a day or two that was not available).  
-7. Refined test parameters and reporting, depending on requirements and what faults are found (currently, the tests can only "fail" in general, without specifying causes).  
-8. Automated updating of browser drivers, per installed browser version. This would eliminate the need for manual updates.  
+2. Better test hierarchy, grouping tests on related pages together, avoiding repeated actions, and shortening the run time.  
+3. Tests for store item reviews.  
+4. Once site functionality is fixed, include omitted tests, such as checkout, or user-profile page navigation.  
+5. Multi-column dropdown handling.  
+6. Testing for navigation using the side-menu in the store's item browser was skipped due to time constraint (would have worked similarly to testing the store navigation from the header drodpowns - counter how many are present, go through each and make sure they lead to the correct page, and make sure the displayed numbers of items match).  
+7. Permanenet solution for the CloudFlare system, which currently forces massive wait times to avoid locking out the test bot.  
+8. Implementation for the Allure test result visualizer (again, due to needing a day or two that was not available).  
+9. Refined test parameters and reporting, depending on requirements and what faults are found (currently, the tests can only "fail" in general, without specifying causes).  
+10. Automated updating of browser drivers, per installed browser version. This would eliminate the need for manual updates.  
 
 ### Known issues with the site itself:
 1. Using the "Search" function while the Search field isn't empty will lead to an "Internal error" page.  
@@ -50,6 +53,7 @@ Basic security tests are also included (XSS, anti-bot).
 5. New users aren't actually registered, and it is impossible to login to the site.  
 6. Items can't be added to the shopping cart ("Added" notification appears, but the cart stays empty).  
 7. Individual item pages show inconsistent information, tabs, and fields.  
+8. Item reviews can't be submitted, and none are shown.  
 
 ### Challenges and limitations:
 1. As no design document is provided, test criteria is more generalized, since page requirements aren't known.  
