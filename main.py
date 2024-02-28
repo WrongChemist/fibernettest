@@ -1,25 +1,12 @@
 
 
 
-# Chrome + Firefox
-# config file (browser, browser version, run type, test types, NO AUTO-UPDATER)
-# pytest
 # Allure (reports)
-# readme.md (setup, config, and execution)
-# requirements.txt (Python packages)
-
-
-
-# Rules:
-# Pythhon 3.8
-# Selenium
-# pytest
-# Git
 
 
 # Key Features for Testing:
 # 1. Product Browsing:
-#  Navigate categories, search for products, view product details.
+#  Navigate categories
 # 2. User Account Management:
 #  Register for a new account, login/logout, access account
 # dashboard.
@@ -650,13 +637,13 @@ class Test_fibernetSite():
 
 
 
-    def test_review_view(self):
+    def est_review_view(self):
         pass
 
 
 
 
-    def test_review_submit(self):
+    def est_review_submit(self):
         pass
 
 
@@ -682,7 +669,7 @@ class Test_fibernetSite():
 
 
 
-    def test_multi_copy_ddos(self):
+    def est_multi_copy_ddos(self):
         pass
 
 
