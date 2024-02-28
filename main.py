@@ -1,68 +1,30 @@
 
-
-
+# TO DO:
 # Allure (reports)
 
-
-# Key Features for Testing:
 # 1. Product Browsing:
 #  Navigate categories
 # 2. User Account Management:
-#  Register for a new account, login/logout, access account
-# dashboard.
+#  login/logout, access account dashboard.
 # 3. Shopping Cart and Checkout:
-#  Add products to cart, view cart, proceed through the checkout
-# process.
+#  view cart, proceed through the checkout process.
 # 4. Product Reviews:
 #  Submit and view product reviews.
-
-
-
-# Suggested Test Scenarios:
-#  Verify navigation and product search functionality.
-#  Test the registration, login, and logout processes.
-#  Validate adding items to the cart, cart updates, and checkout process.
-#  Ensure users can submit and view reviews on product pages.
-
-
-
-# 1. Framework Infrastructure and Architecture:
-#  Develop a test automation framework that is scalable and
-# maintainable.
-#  Use the Page Object Model (POM) pattern to ensure the
-# maintainability of the test scripts.
-#  Setup the framework to support tests on Chrome and Firefox
-# browsers.
-#  Utilize external configuration files for environment management.
 
 # 2. Test Implementation:
 #  Write functional tests covering user authentication, plan management,
 # profile updates, and billing operations.
 #  Include non-functional tests for performance benchmarks and basic
 # security checks.
-#  Ensure cross-browser testing capability.
-#  Integrate pytest for test management and execution.
 
 # 3. Reporting and Documentation:
 #  Integrate a reporting tool like Allure to generate test execution reports.
-#  Provide a README file with detailed setup and execution instructions,
-# including environment setup, test execution, and report generation.
-
-# 4. Code Management and Submission:
-#  Initialize a Git repository for your project and make regular commits to
-# demonstrate your progress.
-#  Host your project on GitHub, making sure the repository is public so it
-# can be reviewed by the Fibernet team.
-#  Ensure your repository contains a clear and structured README.md
-# file that guides the reviewer through setting up, running tests, and
-# understanding your test framework.
-
-
 
 
 
 import pytest
-
+import time
+import configparser
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.firefox.options import Options
@@ -74,19 +36,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementNotInteractableException
 from selenium.webdriver import ActionChains as ac
 
-from re import sub
-from decimal import Decimal
-from random import randint, shuffle
-from math import isclose
-import time
-from time import localtime, strftime
-import configparser
-from pathlib import Path
 
 
 
 
-
+# test class, containing variables used by all tests (such as the configured webdriver, and site address)
+# the test is self-contained, start to finish
+# each test reverts to the homepage at the start (if needed)
+# when going through multiple items, the test returns to the homepage at the end of each
+# returning to homepage is usually followed by a long wait to avoid triggering the CloudFlare anti-bot lockout
 class Test_fibernetSite():
     driver_path_chrome = ""
     driver_path_firefox = ""
@@ -108,6 +66,7 @@ class Test_fibernetSite():
 
 
 
+# a "test" of reading the configuration file, and setting up the webdriver for later use
     def test_config(self):
         config = configparser.ConfigParser()
         config.read('fbrntConfig.ini')
@@ -142,6 +101,7 @@ class Test_fibernetSite():
 
 
 
+# a "test" for initiating the webdriver, going to the site, and making sure it loads at all
     def test_setup(self):
         self.driver = Test_fibernetSite.driver
         self.driver.maximize_window()
@@ -155,6 +115,11 @@ class Test_fibernetSite():
 
 
 
+# testing the functionality of the horizontal store item navigation buttons
+# counting available buttons, and either clicking them directly or opening their dropdown
+# counting and clicking through each of a dropdown's buttons, including the "All"
+# making sure the buttons lead to their appropriate page, and the correct side-menu button is highlighted
+# (doesn't account for multi-column dropdown menus, so only the first is covered)
     def test_navigation_topstore(self):
         store_categories = 0
         store_type = ""
@@ -213,6 +178,10 @@ class Test_fibernetSite():
 
 
 
+# navigation test for the carousel (timed pictures at the top of the homepage)
+# count buttons
+# switch to each button and click it
+# make sure it leads to the correct item page
     def test_navigation_carousel(self):
         carousel_items = 0
         target_page_name = ""
@@ -246,6 +215,10 @@ class Test_fibernetSite():
 
 
 
+# navigation test for the "Featured" items at the bottom of the page
+# count items
+# click each item's name
+# make sure the button leads to the correct item page
     def test_navigation_featured(self):
         featured_items = 0
         target_page_name = ""
@@ -271,19 +244,24 @@ class Test_fibernetSite():
             self.driver.find_element(By.XPATH, '//div[@id="content"]//div[@class="col"][%d]//div[@class="content"]//a' % x).click()
 
             target_page_name in WebDriverWait(self.driver, 15).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="content"]//h1'))).text
-            time.sleep(2)
+            time.sleep(3)
             self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="tab-description"]//p[last()]'))
-            time.sleep(2)
+            time.sleep(3)
             self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="content"]//img'))
-            time.sleep(2)
-            self.driver.find_element(By.XPATH, '//div[@id="content"]//img').click()
-            time.sleep(2)
+            time.sleep(5)
+#            self.driver.find_element(By.XPATH, '//div[@id="content"]//img').click()
+#            time.sleep(5)
             self.driver.get(Test_fibernetSite.site_address)
             WebDriverWait(self.driver, 15).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="common-home"]//div[@class="col"]//div[@class="product-thumb"]')))
-            time.sleep(2)
+            time.sleep(5)
 
 
 
+# navigation test for the footer buttons
+# count number of buttons in each column
+# click through all buttons, except those that lead to Account-specific pages
+# check that the correct page loads
+# (check is generalized, since the page titles use inconsistent element types)
     def test_navigation_footer(self):
         footer_items = 0
         target_page_name = ""
@@ -322,6 +300,11 @@ class Test_fibernetSite():
 
 
 
+# use the "Featured" items to check the item pages
+# load each item's page
+# check the correct page loads, with their descriptions (same as seen on home page)
+# check switching between information tabs
+# check item image loading
     def test_product_details(self):
         featured_items = 0
         product_description = ""
@@ -390,6 +373,9 @@ class Test_fibernetSite():
 
 
 
+# testing the search function
+# searching with an  empty "Search" field, leading to an empty search page
+# searching with any term in the field leads to an error page
     def test_search(self):
         target_page_name = ""
 
@@ -416,6 +402,12 @@ class Test_fibernetSite():
 
 
 
+# testing account creation with pre-set parameters
+# going to the "Register" page using the header dropdown
+# entering all required information
+# triggering all requried checkboxes (and checking the "Terms" popup)
+# submitting the new user
+# formerly tested new user creation using the "Forgot password" feature, but results were inconsistent, so it was removed
     def test_account_new(self):
         user_first_name = Test_fibernetSite.user_first_name
         user_last_name = Test_fibernetSite.user_last_name
@@ -467,6 +459,10 @@ class Test_fibernetSite():
 
 
 
+# testing logging in to the new user
+# going to the login page using the header dropdown
+# entering the credentials of the created user
+# assessing if the user was logged in (looking for the user's name in the header)
     def test_account_login(self):
         user_first_name = Test_fibernetSite.user_first_name
         user_last_name = Test_fibernetSite.user_last_name
@@ -496,6 +492,11 @@ class Test_fibernetSite():
 
 
 
+# testing item purchasing using the "Featured" items
+# odd items are purchased from the homepage, using their "Cart" button
+# even items are purchased from their item page, with a quantity set to their index (2 or 4)
+# checking for the "Added" notification
+# checking for changes in the "X items" shopping cart button
     def test_store_purchase_featured(self):
         featured_items = 0
         purchased_items = 0
@@ -522,11 +523,6 @@ class Test_fibernetSite():
                 self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="content"]//div[@class="col"][%d]//div[@class="content"]//button[contains (@aria-label, "Cart")]' % x))
                 time.sleep(1)
                 self.driver.find_element(By.XPATH, '//div[@id="content"]//div[@class="col"][%d]//div[@class="content"]//button[contains (@aria-label, "Cart")]' % x).click()
-                WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div[contains (text(), "added")]')))
-                target_item_name in WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div/a'))).get_attribute("text")
-                self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="header-cart"]//button'))
-                time.sleep(1)
-                WebDriverWait(self.driver, 15).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="header-cart"]//button//i[contains (text(), "%d item")]' % (purchased_items + x))))
 
             elif x % 2 == 0:
                 self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="content"]//div[@class="col"][%d]//div[@class="content"]//a' % x))
@@ -544,11 +540,12 @@ class Test_fibernetSite():
                 self.driver.find_element(By.XPATH, '//div[@id="product"]//label').click()
                 time.sleep(1)
                 self.driver.find_element(By.XPATH, '//div[@id="product"]//button[@type="submit"][@id="button-cart"]').click()
-                WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div[contains (text(), "added")]')))
-                target_item_name in WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div/a'))).get_attribute("text")
-                self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="header-cart"]//button'))
-                time.sleep(1)
-                WebDriverWait(self.driver, 15).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="header-cart"]//button//i[contains (text(), "%d item")]' % (purchased_items + x))))
+
+            WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div[contains (text(), "added")]')))
+            target_item_name in WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="alert"]/div/a'))).get_attribute("text")
+            self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.XPATH, '//div[@id="header-cart"]//button'))
+            time.sleep(1)
+            WebDriverWait(self.driver, 15).until(ec.visibility_of_element_located((By.XPATH, '//div[@id="header-cart"]//button//i[contains (text(), "%d item")]' % (purchased_items + x))))
 
             purchased_items = purchased_items + x
 
@@ -574,7 +571,8 @@ class Test_fibernetSite():
 
 
 
-
+# NOT IN USE
+# testing navigation inside the store item categories, using the side-menu
     def est_navigation_instore(self):
         store_categories = 0
         store_type = ""
@@ -636,13 +634,16 @@ class Test_fibernetSite():
 
 
 
-
+# NOT IN USE
+# testing viewing reviews of items, probably using "Featured" items
     def est_review_view(self):
         pass
 
 
 
 
+# NOT IN USE
+# testing submitting and viewing an item review, probably using "Featured" items
     def est_review_submit(self):
         pass
 
@@ -651,6 +652,9 @@ class Test_fibernetSite():
 
 
 
+# testing against XSS attacks
+# entering a script into the search field and activating it
+# checking if the script was blocked
     def test_search_xss(self):
         xss_search_text = "<script>alert('XSS attack attempt')</script>"
 
@@ -669,11 +673,16 @@ class Test_fibernetSite():
 
 
 
+# NOT IN USE
+# an attempt at testing against DDOS attacks, using multiple iterations of the webdriver (opening multiple pages of the target from the same source)
+# didn't work as intended, and was removed
     def est_multi_copy_ddos(self):
         pass
 
 
 
+# testing the CloudFlare anti-bot lockout by rapidly loading the site's homepage
+# checking the the bot is blocked byt the "Verifying you are human" checkbox
     def test_interact_speed_lock(self):
         self.driver = Test_fibernetSite.driver
 
@@ -689,5 +698,6 @@ class Test_fibernetSite():
 
 
 
+# a "test" where the webdriver instance (browser) used in the tests is closed
     def test_cleanup(self):
         Test_fibernetSite.driver.quit()
