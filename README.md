@@ -4,7 +4,7 @@ Below are all the instructions, explanations, details, and caveats for the autom
 ## WARNING
 Due to time constraints, a slow work terminal (especially during memory operations, such as counting), and CloudFlare present on the test website, running the script may produce HIGHLY INCONSISTENT results, such as slowdoown or lockouts.  
 Using a protection system on a public-facing website is non-negotiable, but bypassing it consistently would take time that isn't available.  
-Reference videos are included, demonstrating the functionality on my native machine, one for each browser.  
+A reference video is included, demonstrating the functionality on my native machine.  
 
 ### Requirements:
 To run the test script, you will need the following:  
